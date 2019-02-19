@@ -1,15 +1,19 @@
-{
-    "extends": "eslint-config-airbnb",
-    "env": {
-      "mocha": true,
-      "node": true
-    },
-    "globals": {
-      "expect": true
+ {
+    "parserOptions": {
+        "extends": "eslint-config-airbnb",
+        "ecmaVersion": 6,
+        "sourceType": "module",
+        "ecmaFeatures": {
+            "jsx": true
+        },    
+        "env": {
+          "jest": true,
+          "node": true
+        }
     },
     "rules": {
       "padded-blocks": 0,
       "no-use-before-define": [2, "nofunc"],
       "no-unused-expressions": 0
     }
-  }
+}
