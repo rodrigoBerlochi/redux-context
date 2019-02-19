@@ -5,9 +5,35 @@ export const createMagicTree = (
   mapStateToProps = null,
   mapDispatchToProps = null
 ) => (domain = '') => {
+  if (mapStateToProps !== null && typeof mapStateToProps !== 'function') {
+    throw new Error(
+      'Argument: if mapStateToProps is defined it must be a function'
+    );
+  }
+
+  if (mapDispatchToProps !== null && typeof mapDispatchToProps !== 'function') {
+    throw new Error(
+      'Argument: if mapDispatchToProps is defined it must be a function'
+    );
+  }
+
+  if (typeof domain !== 'string') {
+    throw new Error('Argument: domain must a String');
+  }
+
   const Context = createContext();
   const { Consumer, Provider } = Context;
 
+  /**
+   * @description HOC wraps easily a Presentational component that
+   * is usually direct child of the corresponding container and
+   * is also parent of a presentational tree.
+   * Every child of the returned component will get access to
+   * all of the props for this Domain/Container, without need of
+   * passing them explicitly on each level.
+   * @param {React.Component} Component
+   * @returns {React.Component}
+   */
   const withContext = Component => {
     return function WrapperComponent(props) {
       return (
@@ -22,14 +48,18 @@ export const createMagicTree = (
 
   class innerContainer extends Component {
     render() {
-      const { children, restProps } = this.props;
+      const { children, ...restProps } = this.props;
 
       return <Provider value={{ ...restProps }}>{children}</Provider>;
     }
   }
 
-  const hocName = `with${domain}Context`;
-  const containerName = `${domain}Container`;
+  const lower = domain.toLowerCase();
+  const Domain = lower.length
+    ? lower.charAt(0).toUpperCase() + lower.slice(1)
+    : '';
+  const hocName = `with${Domain}Context`;
+  const containerName = `${Domain}Container`;
 
   const Container = connect(
     mapStateToProps,
