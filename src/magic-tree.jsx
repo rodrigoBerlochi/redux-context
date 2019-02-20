@@ -1,5 +1,6 @@
 import React, { createContext, Component } from 'react';
 import { connect } from 'react-redux';
+import { capitalize } from 'lodash.capitalize';
 
 export const createMagicTree = (
   mapStateToProps = null,
@@ -11,9 +12,13 @@ export const createMagicTree = (
     );
   }
 
-  if (mapDispatchToProps !== null && typeof mapDispatchToProps !== 'function') {
+  if (
+    mapDispatchToProps !== null &&
+    typeof mapDispatchToProps !== 'function' &&
+    typeof mapDispatchToProps !== 'object'
+  ) {
     throw new Error(
-      'Argument: if mapDispatchToProps is defined it must be a function'
+      'Argument: if mapDispatchToProps is defined it must be a function or an object'
     );
   }
 
@@ -54,10 +59,7 @@ export const createMagicTree = (
     }
   }
 
-  const lower = domain.toLowerCase();
-  const Domain = lower.length
-    ? lower.charAt(0).toUpperCase() + lower.slice(1)
-    : '';
+  const Domain = capitalize(domain);
   const hocName = `with${Domain}Context`;
   const containerName = `${Domain}Container`;
 

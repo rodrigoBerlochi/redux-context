@@ -15,15 +15,17 @@ export default [
       format: 'cjs',
       indent: false
     },
-    external: [
-      ...Object.keys(pkg.dependencies || []),
-      ...Object.keys(pkg.peerDependencies || [])
-    ],
+    external: [...Object.keys(pkg.peerDependencies || [])],
     plugins: [
       babel({
         exclude: 'node_modules/**' // only transpile our source code
       }),
-      resolve()
+      resolve(),
+      commonjs({
+        namedExports: {
+          'node_modules/lodash.capitalize/index.js': ['capitalize']
+        }
+      })
     ]
   },
 
@@ -35,15 +37,17 @@ export default [
       format: 'es',
       indent: false
     },
-    external: [
-      ...Object.keys(pkg.dependencies || {}),
-      ...Object.keys(pkg.peerDependencies || {})
-    ],
+    external: [...Object.keys(pkg.peerDependencies || {})],
     plugins: [
       babel({
         exclude: 'node_modules/**' // only transpile our source code
       }),
-      resolve()
+      resolve(),
+      commonjs({
+        namedExports: {
+          'node_modules/lodash.capitalize/index.js': ['capitalize']
+        }
+      })
     ]
   },
 
@@ -83,7 +87,8 @@ export default [
             'createContext',
             'Component',
             'PureComponent'
-          ]
+          ],
+          'node_modules/lodash.capitalize/index.js': ['capitalize']
         }
       })
     ]
@@ -123,7 +128,8 @@ export default [
             'createContext',
             'Component',
             'PureComponent'
-          ]
+          ],
+          'node_modules/lodash.capitalize/index.js': ['capitalize']
         }
       })
     ]
@@ -170,7 +176,8 @@ export default [
             'createContext',
             'Component',
             'PureComponent'
-          ]
+          ],
+          'node_modules/lodash.capitalize/index.js': ['capitalize']
         }
       })
     ]
